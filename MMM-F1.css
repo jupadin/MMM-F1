@@ -1,0 +1,43 @@
+/* Magic Mirror
+ * Module: MMM-F1
+ *
+ * By jupadin
+ * MIT Licensed.
+*/
+
+/* .table {
+border-collapse: separate;
+border-spacing: 5px 0px;
+} */
+
+.MMM-F1 {
+    font-size: 16px !important;
+    line-height: 1.4 !important;
+}
+
+.MMM-F1 .position {
+    width: 25px;
+}
+
+.MMM-F1 .driver {
+    width: 140px;
+}
+
+.MMM-F1 .driver, .MMM-F1 .constructor {
+    text-align: left;
+}
+
+.MMM-F1 .points {
+    text-align: right;
+    width: 37px;
+}
+
+.MMM-F1 .pointsHeader, .MMM-F1 .winsHeader {
+    text-align: center !important;
+}
+
+.MMM-F1 .footer {
+    text-align: right;
+    font-size: small;
+    border-top: 1px solid var(--color-text-dimmed);
+}
