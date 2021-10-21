@@ -1,4 +1,4 @@
-# MMM-NBA
+# MMM-F1
 
 <p style="text-align: center">
     <a href="https://choosealicense.com/licenses/mit"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
