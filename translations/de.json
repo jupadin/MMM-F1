@@ -4,5 +4,8 @@
     "DRIVER": "Fahrer",
     "CONSTRUCTOR": "Konstrukteur",
     "SEASON": "Saison",
-    "UPDATED": "Aktualisiert"
+    "UPDATED": "Aktualisiert",
+    "ROUND": "Rennen",
+    "UPCOMING_GP": "Nächster GP",
+    "TRACK_LAYOUT": "Streckenlayout"
 }

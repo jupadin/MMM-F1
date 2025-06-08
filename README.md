@@ -7,9 +7,13 @@
 This module is an extention for the [MagicMirror](https://github.com/MichMich/MagicMirror).
 
 The module is based on the work of [ianperrin](https://github.com/ianperrin/MMM-Formula1) and uses the [ERGAST API](http://ergast.com/mrd/).
+The curuit layouts are also taken from [ianperrin](https://github.com/ianperrin/MMM-Formula1) and can be found there! :)
+
 
 ### To-Do's
-
+[] Implement fetcher object analog to newsfetcher
+[] Update README with new configuration options
+[] Implement logic to focus on more than a single driver or constructeur
 
 ## Installation
 
@@ -36,7 +40,7 @@ npm install
             config: {
                 animationSpeed: 2000,
                 updateInterval: 86400000,
-                focus_on: false,
+                focusOnDrivers: VER,
                 showHeaderAsIcons: false,
                 showFooter: true,
             }
@@ -54,6 +58,6 @@ The following configuration options can be set and/or changed:
 | ---- | ---- | ---- | ---- |
 | `animationSpeed` | `int` | `2000` | Animation speed to fade in the module on startup [milliseconds] (2 seconds) |
 | `updateInterval` | `int` | `86400000` | How often the table shall be updated [milliseconds] (1 day) |
-| `focus_on` | `array` | `false` | Highlight driver(s) of this array (example: `['Verstappen']` |
+| `focusOnDrivers` | `string` | `false` | Highlight driver (example: `"VER"`) |
 | `showHeaderAsIcons`| `bool` |`false` | Display header as icons |
 | `showFooter` | `bool` | `true` | Display footer with information about last update |

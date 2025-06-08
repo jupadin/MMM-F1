@@ -4,5 +4,8 @@
     "DRIVER": "Driver",
     "CONSTRUCTOR": "Constructor",
     "SEASON": "Season",
-    "UPDATED": "Updated"
+    "UPDATED": "Updated",
+    "ROUND": "Round",
+    "UPCOMING_GP": "Upcoming GP",
+    "TRACK_LAYOUT": "Circuit Layout"
 }
