@@ -6,7 +6,7 @@
 
 This module is an extention for the [MagicMirror](https://github.com/MichMich/MagicMirror).
 
-The module is based on the work of [ianperrin](https://github.com/ianperrin/MMM-Formula1) and uses the [ERGAST API](http://ergast.com/mrd/).
+The module is based on the work of [ianperrin](https://github.com/ianperrin/MMM-Formula1) and uses the [jolpi.ca API](http://api.jolpi.ca/ergast/f1/).
 The curuit layouts are also taken from [ianperrin](https://github.com/ianperrin/MMM-Formula1) and can be found there! :)
 
 
