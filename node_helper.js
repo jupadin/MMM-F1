@@ -74,7 +74,7 @@ module.exports = NodeHelper.create({
                 // self.sendSocketNotification("ERROR", response.status);
                 throw `Error fetching F1 general data with status code ${response.status}.`;
             }
-            console.debug(`${this.name}: Successfully fetched general data from F1 API.`);
+            Log.debug(`${this.name}: Successfully fetched general data from F1 API.`);
             return response.json();
         })
         .then(data => {
@@ -98,12 +98,12 @@ module.exports = NodeHelper.create({
                 upcomingGP = this.mapScheduleData(data.MRData.RaceTable?.Races[currentRound]);
             }
 
-            console.debug(`${this.name}: Fetched general data for season ${season} with ${totalRaces} races.`);
-            console.debug(`${this.name}: Fetched next Grand Prix: ${upcomingGP.raceName}.`);
+            Log.debug(`${this.name}: Fetched general data for season ${season} with ${totalRaces} races.`);
+            Log.debug(`${this.name}: Fetched next Grand Prix: ${upcomingGP.raceName}.`);
 
             this.sendSocketNotification("GENERAL", {season: season, total: totalRaces, currentRound: currentRound, nextGP: upcomingGP});
 
-            console.debug(`${this.name}: Successfully sent general data to the frontend.`);
+            Log.debug(`${this.name}: Successfully sent general data to the frontend.`);
             return data;
 
         }).then(data => {
