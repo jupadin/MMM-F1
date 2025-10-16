@@ -13,7 +13,7 @@ The curuit layouts are also taken from [ianperrin](https://github.com/ianperrin/
 ### To-Do's
 - [ ] Implement fetcher object analog to newsfetcher
 - [ ] Update README with new configuration options
-- [x] Implement logic to focus on more than a single ~~driver~~ or constructeur
+- [x] :tada: Implement logic to focus on more than a single ~~driver~~ or constructeur
 
 ## Installation
 

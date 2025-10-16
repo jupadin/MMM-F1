@@ -1,5 +1,25 @@
 {
+  "name": "mmm-f1",
+  "version": "1.0.0",
+  "description": "A MagicMirror² module to display F1 information.",
+  "main": "MMM-F1.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jupadin/MMM-F1.git"
+  },
+  "author": "jupadin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jupadin/MMM-F1/issues"
+  },
+  "homepage": "https://github.com/jupadin/MMM-F1#readme",
   "dependencies": {
     "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "mocha": "^11.7.4"
   }
 }
