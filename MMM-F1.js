@@ -14,9 +14,9 @@ Module.register("MMM-F1", {
         season: "current",
         showStandings: "both",
         maxDrivers: 4,
-        focusOnDrivers: "GAS",
-        maxConstructors: 3,
-        focusOnConstructors: "Mercedes",
+        focusOnDrivers: false,
+        maxConstructors: 4,
+        focusOnConstructors: false,
         showNextGP: true,
         showNextGPDetails: true,
         showNextGPMap: true,
@@ -25,7 +25,7 @@ Module.register("MMM-F1", {
         focusOnGP: "Australia",
         grayscale: false,
         fade: true,
-        fadePoint: 0.1,
+        fadePoint: 0.2,
         showHeaderAsIcons: true,
         showFooter: true,
     },
@@ -276,7 +276,7 @@ Module.register("MMM-F1", {
             const nextGPData10 = document.createElement("td");
             nextGPData10.className = "bright";
             const nextGPRace = new Date(nextGP.date + " " + nextGP.time).toLocaleString();
-            nextGPData10.innerHTML = `Race: ${nextGPRace}`;
+            nextGPData10.innerHTML = `${this.translate("RACE")}: ${nextGPRace}`;
             nextGPDataRow10.appendChild(nextGPData10);
 
             const nextGPSectors = document.createElement("td");
@@ -547,16 +547,13 @@ Module.register("MMM-F1", {
             }
 
             // If focus_on is given as array
-            if (Array.isArray(this.config.focusOnDrivers)) {
-                this.config.focusOnDrivers.forEach(e => {
-                    if (element.code.includes(e)) {
-                        // Either highlight only team name or highlight complete row.
-                        // team.className = "bright";
-                        rowElement.classList.add("bright");
-                        rowElement.style.opacity = 1
-                    }
-                });
-            } else { // focus_on is given as string
+            if (Array.isArray(this.config.focusOnDrivers) && this.config.focusOnDrivers.length > 0) {
+                if (this.config.focusOnDrivers.includes(element.code)) {
+                    rowElement.classList.add("bright");
+                    rowElement.style.opacity = 1;
+                }
+            } else {
+                // focus_on is given as string
                 if (element.code.includes(this.config.focusOnDrivers)) {
                     // Either highlight only team name or highlight complete row.
                     // team.className = "bright";
@@ -564,6 +561,26 @@ Module.register("MMM-F1", {
                     rowElement.style.opacity = 1
                 }
             }
+
+            // // If focus_on is given as array
+            // if (Array.isArray(this.config.focusOnDrivers)) {
+            //     Log.info(this.config.focusOnDrivers);
+            //     this.config.focusOnDrivers.forEach(e => {
+            //         if (e.includes(element.code)) {
+            //             // Either highlight only team name or highlight complete row.
+            //             // team.className = "bright";
+            //             rowElement.classList.add("bright");
+            //             rowElement.style.opacity = 1
+            //         }
+            //     });
+            // } else { // focus_on is given as string
+            //     if (element.code.includes(this.config.focusOnDrivers)) {
+            //         // Either highlight only team name or highlight complete row.
+            //         // team.className = "bright";
+            //         rowElement.classList.add("bright");
+            //         rowElement.style.opacity = 1
+            //     }
+            // }
 
             table.appendChild(rowElement);
         });

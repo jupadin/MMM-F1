@@ -157,20 +157,53 @@ module.exports = NodeHelper.create({
             const d = standingsTable.map(this.mapDriverStanding);
             const result = this.config.maxDrivers ? d.slice(0, this.config.maxDrivers) : d;
 
-            // TODO: Implement mulitple driver focus
+            if (!this.config.focusOnDrivers) {
+                return this.sendSocketNotification("DRIVER", result);
+            };
 
-            // If the favorite team is not found in the already displayling list of drivers (due to *maxDrivers* config setting) (which is == -1)
-            if (this.config.focusOnDrivers && this.config.focusOnDrivers.indexOf(result.code) == -1) {
-                const i = d.find(e => e.code === this.config.focusOnDrivers);
-                if (i) {
-                    // Remove the last driver from the list...
-                    result.pop();
-                    // ... and add the favorite team to the list
-                    result.push(i);
-                } else {
-                    Log.warn(`${this.name}: Could not find driver with code "${this.config.focusOnDrivers}".`);
-                }
+            // Check if focusOnDrivers is an array or a single value
+            const focusOnDrivers = Array.isArray(this.config.focusOnDrivers) ? this.config.focusOnDrivers : [this.config.focusOnDrivers];
+
+            if (focusOnDrivers.length > this.config.maxDrivers) {
+                Log.warn(`${this.name}: Number of favorite drivers (${focusOnDrivers.length}) exceeds maxDrivers setting (${this.config.maxDrivers}). Some favorite drivers will not be displayed.`);
             }
+
+            // Ensure favorite drivers are in the result
+            focusOnDrivers.forEach(focusOnDriver => {
+                const alreadyInResult = result.find(driver => driver.code === focusOnDriver);
+                if (alreadyInResult) {
+                    Log.debug(`${this.name}: Favorite driver ${focusOnDriver} is already in the standings.`);
+                    return; // Skip to the next favorite driver
+                }
+
+                const driverToAdd = d.find(driver => driver.code === focusOnDriver);
+
+                if (!driverToAdd) {
+                    Log.warn(`${this.name}: Could not find driver with code "${focusOnDriver}".`);
+                    return; // Skip to the next favorite driver
+                }
+
+                if (this.config.maxDrivers && result.length >= this.config.maxDrivers) {
+                    // Find the last non-favorite driver in the list to remove
+
+                    // Log.debug([...result].reverse());
+
+                    const removeableIndex = [...result].reverse().findIndex(driver => !focusOnDrivers.includes(driver.code));
+                    const actualIndex = removeableIndex === -1 ? -1 : result.length - 1 - removeableIndex;
+                    // Log.debug(removeableIndex, actualIndex);
+
+                    if (actualIndex !== -1) {
+                        result.splice(actualIndex, 1); // Remove the non-favorite driver
+                        Log.debug(`${this.name}: Removed non-favorite driver to make space for favorite driver ${focusOnDriver}.`);
+                    } else {
+                        // All current drivers are favorites, cannot remove any
+                        Log.warn(`${this.name}: All displayed drivers are favorites, cannot add more.`);
+                        return; // Skip to the next favorite driver
+                    }
+                    result.push(driverToAdd);
+                }
+
+            });
 
             this.sendSocketNotification("DRIVER", result);
             return;
@@ -182,6 +215,12 @@ module.exports = NodeHelper.create({
         });
     },
 
+    /**
+     * 
+     * @param {*} url 
+     * @param {*} fetchOptions 
+     * @returns 
+     */
     fetchConstructorStandings: function(url=null, fetchOptions={}) {
         if (url === null) {
             return;
@@ -200,15 +239,49 @@ module.exports = NodeHelper.create({
             const d = standingsTable.map(this.mapConstructorStanding);
             const result = this.config.maxConstructors ? d.slice(0, this.config.maxConstructors) : d;
 
-            if (this.config.focusOnConstructors && this.config.focusOnConstructors.indexOf(result.name) == -1) {
-                const l = d.find(e => e.name.toLowerCase().includes(this.config.focusOnConstructors.toLowerCase()));
-                if (l) {
-                    result.pop();
-                    result.push(l);
-                } else {
-                    Log.warn(`${this.name}: Could not find constructor with name "${this.config.focusOnConstructors}".`);
-                }
+            if (!this.config.focusOnConstructors) {
+                return this.sendSocketNotification("CONSTRUCTOR", result);
             }
+
+            // Check if focusOnConstructors is an array or a single value
+            const focusOnConstructors = Array.isArray(this.config.focusOnConstructors) ? this.config.focusOnConstructors : [this.config.focusOnConstructors];
+
+            if (focusOnConstructors.length > this.config.maxConstructors) {
+                Log.warn(`${this.name}: Number of favorite constructors (${focusOnConstructors.length}) exceeds maxConstructors setting (${this.config.maxConstructors}). Some favorite constructors will not be displayed.`);
+            }
+
+            // Ensure favorite constructors are in the result
+            focusOnConstructors.forEach(focusOnConstructor => {
+                const alreadyInResult = result.find(constructor => constructor.name === focusOnConstructor);
+                if (alreadyInResult) {
+                    Log.debug(`${this.name}: Favorite constructor ${focusOnConstructor} is already in the standings.`);
+                    return; // Skip to the next favorite constructor
+                }
+
+                const constructorToAdd = d.find(constructor => constructor.name === focusOnConstructor);
+
+                if (!constructorToAdd) {
+                    Log.warn(`${this.name}: Could not find constructor with name "${focusOnConstructor}".`);
+                    return; // Skip to the next favorite constructor
+                }
+
+                if (this.config.maxConstructors && result.length >= this.config.maxConstructors) {
+                    // Find the last non-favorite constructor in the list to remove
+                    const removeableIndex = [...result].reverse().findIndex(constructor => !focusOnConstructors.includes(constructor.name));
+                    const actualIndex = removeableIndex === -1 ? -1 : result.length - 1 - removeableIndex;
+
+                    if (actualIndex !== -1) {
+                        result.splice(actualIndex, 1); // Remove the non-favorite constructor
+                        Log.debug(`${this.name}: Removed non-favorite constructor to make space for favorite constructor ${focusOnConstructor}.`);
+                    } else {
+                        // All current constructors are favorites, cannot remove any
+                        Log.warn(`${this.name}: All displayed constructors are favorites, cannot add more.`);
+                        return; // Skip to the next favorite constructor
+                    }
+                    result.push(constructorToAdd);
+                }
+
+            });
 
             this.sendSocketNotification("CONSTRUCTOR", result);
             return;
@@ -220,6 +293,12 @@ module.exports = NodeHelper.create({
         });
     },
 
+    /**
+     * 
+     * @param {*} url 
+     * @param {*} fetchOptions 
+     * @returns 
+     */
     fetchSchedule: function(url=null, fetchOptions={}) {
         if (url === null) {
             return;
@@ -244,6 +323,11 @@ module.exports = NodeHelper.create({
         })
     },
 
+    /**
+     * 
+     * @param {*} team 
+     * @returns 
+     */
     mapConstructorStanding: function(team) {
         const t = {
             position: team.position,
@@ -256,6 +340,11 @@ module.exports = NodeHelper.create({
         return t;
     },
 
+    /**
+     * 
+     * @param {*} driver 
+     * @returns 
+     */
     mapDriverStanding: function(driver) {
         const d = {
             position: driver.position,
@@ -272,6 +361,11 @@ module.exports = NodeHelper.create({
         return d;
     },
 
+    /**
+     * 
+     * @param {*} event 
+     * @returns 
+     */
     mapScheduleData: function(event) {
         const e = {
             season: event.season,
